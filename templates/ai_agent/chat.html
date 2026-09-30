@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}AI Assistant{% endblock %}
+{% block content %}
+<h1>AutoCare AI Assistant</h1>
+<p style="color:var(--muted)">Try: "What services are overdue on my car?" or "Book my next service."</p>
+
+<div id="chat-window"></div>
+<div id="chat-input-row">
+    <input type="text" id="chat-input" placeholder="Type your message..." autocomplete="off">
+    <button class="btn" id="chat-send">Send</button>
+</div>
+
+<script>
+    window.CHAT_ENDPOINT = "{% url 'ai_agent:chat_message' %}";
+    window.CSRF_TOKEN = "{{ csrf_token }}";
+</script>
+<script src="{% static 'js/agent_chat.js' %}"></script>
+{% endblock %}

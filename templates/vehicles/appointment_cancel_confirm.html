@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Cancel Appointment{% endblock %}
+{% block content %}
+<div class="card" style="max-width:420px;margin:0 auto;">
+    <h2>Cancel this appointment?</h2>
+    <p>{{ appointment.vehicle }} — {{ appointment.service_type }} on {{ appointment.scheduled_at }}</p>
+    <p>This action cannot be undone.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Yes, Cancel It</button>
+        <a href="{% url 'vehicles:appointment_list' %}" class="btn btn-outline">Go Back</a>
+    </form>
+</div>
+{% endblock %}

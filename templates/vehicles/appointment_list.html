@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Appointments{% endblock %}
+{% block content %}
+<h1>Appointments</h1>
+<a href="{% url 'vehicles:appointment_create' %}" class="btn">+ Book Appointment</a>
+<table style="margin-top:16px;">
+    <tr><th>Vehicle</th><th>Service</th><th>When</th><th>Status</th><th>Source</th><th></th></tr>
+    {% for a in appointments %}
+    <tr>
+        <td>{{ a.vehicle }}</td>
+        <td>{{ a.service_type }}</td>
+        <td>{{ a.scheduled_at }}</td>
+        <td><span class="status-badge status-{{ a.status }}">{{ a.status }}</span></td>
+        <td>{% if a.created_by_agent %}AI Agent{% else %}Manual{% endif %}</td>
+        <td>
+            {% if a.status != "CANCELLED" and a.status != "COMPLETED" %}
+            <a href="{% url 'vehicles:appointment_cancel' a.pk %}" class="btn btn-danger">Cancel</a>
+            {% if user.role == "ADMIN" or user.role == "MANAGER" %}
+            <a href="{% url 'vehicles:appointment_confirm' a.pk %}" class="btn">Confirm</a>
+            {% endif %}
+            {% endif %}
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No appointments yet.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

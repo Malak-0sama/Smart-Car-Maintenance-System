@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Welcome, {{ user.username }}</h1>
+
+{% if user.is_customer %}
+    <div class="card">
+        <h3>Your Vehicles ({{ vehicles.count }})</h3>
+        {% for v in vehicles %}
+            <p><a href="{% url 'vehicles:vehicle_detail' v.pk %}">{{ v }}</a></p>
+        {% empty %}
+            <p>No vehicles yet. <a href="{% url 'vehicles:vehicle_create' %}">Add one</a>.</p>
+        {% endfor %}
+    </div>
+    <div class="card">
+        <h3>Upcoming Appointments</h3>
+        {% for a in upcoming_appointments %}
+            <p>{{ a.vehicle }} — {{ a.service_type }} on {{ a.scheduled_at }}
+               <span class="status-badge status-{{ a.status }}">{{ a.status }}</span></p>
+        {% empty %}
+            <p>No upcoming appointments.</p>
+        {% endfor %}
+    </div>
+    <a href="{% url 'ai_agent:chat_page' %}" class="btn">Ask AI Assistant</a>
+
+{% elif user.is_technician %}
+    <div class="card">
+        <h3>Your Assigned Appointments</h3>
+        {% for a in assigned_appointments %}
+            <p>{{ a.vehicle }} — {{ a.service_type }} on {{ a.scheduled_at }}
+               <span class="status-badge status-{{ a.status }}">{{ a.status }}</span></p>
+        {% empty %}
+            <p>No assigned jobs.</p>
+        {% endfor %}
+    </div>
+
+{% else %}
+    <div class="grid">
+        <div class="card"><h3>Total Vehicles</h3><p style="font-size:2rem">{{ total_vehicles }}</p></div>
+        <div class="card"><h3>Total Customers</h3><p style="font-size:2rem">{{ total_customers }}</p></div>
+    </div>
+    <div class="card">
+        <h3>Pending Appointments</h3>
+        {% for a in pending_appointments %}
+            <p>{{ a.vehicle }} — {{ a.service_type }} on {{ a.scheduled_at }}
+               {% if a.created_by_agent %}<em>(booked by AI agent)</em>{% endif %}
+               — <a href="{% url 'vehicles:appointment_confirm' a.pk %}">Confirm</a></p>
+        {% empty %}
+            <p>No pending appointments.</p>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}AutoCare - Smart Car Service & Maintenance{% endblock %}
+{% block content %}
+<div class="card">
+    <h1>Smart Car Service & Maintenance System</h1>
+    <p>Manage your vehicles, book maintenance appointments, and let our AI assistant
+       track overdue services and handle bookings for you.</p>
+    {% if not user.is_authenticated %}
+        <a href="{% url 'authentication:register' %}" class="btn">Get Started</a>
+        <a href="{% url 'authentication:login' %}" class="btn btn-outline">Login</a>
+    {% else %}
+        <a href="{% url 'core:dashboard' %}" class="btn">Go to Dashboard</a>
+    {% endif %}
+</div>
+{% endblock %}

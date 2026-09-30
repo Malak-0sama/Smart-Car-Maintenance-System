@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Vehicles{% endblock %}
+{% block content %}
+<h1>Vehicles</h1>
+<a href="{% url 'vehicles:vehicle_create' %}" class="btn">+ Add Vehicle</a>
+<div class="grid" style="margin-top:16px;">
+    {% for v in vehicles %}
+    <div class="card">
+        <h3><a href="{% url 'vehicles:vehicle_detail' v.pk %}">{{ v }}</a></h3>
+        <p>Mileage: {{ v.current_mileage_km }} km</p>
+        {% if v.owner != user %}<p><em>Owner: {{ v.owner }}</em></p>{% endif %}
+    </div>
+    {% empty %}
+    <p>No vehicles registered yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}

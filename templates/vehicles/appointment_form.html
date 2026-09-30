@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment{% endblock %}
+{% block content %}
+<div class="card" style="max-width:420px;margin:0 auto;">
+    <h2>Book Appointment</h2>
+    <p><em>Tip: you can also ask the <a href="{% url 'ai_agent:chat_page' %}">AI Assistant</a> to find and book a slot for you.</em></p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn" type="submit">Request Appointment</button>
+    </form>
+</div>
+{% endblock %}

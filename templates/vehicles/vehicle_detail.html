@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ vehicle }}{% endblock %}
+{% block content %}
+<h1>{{ vehicle }}</h1>
+<p>VIN: {{ vehicle.vin }} | Mileage: {{ vehicle.current_mileage_km }} km</p>
+
+<div class="card">
+    <h3>Maintenance History</h3>
+    <table>
+        <tr><th>Service</th><th>Date</th><th>Mileage</th><th>Cost</th></tr>
+        {% for r in records %}
+        <tr><td>{{ r.service_type }}</td><td>{{ r.performed_at }}</td><td>{{ r.mileage_at_service }} km</td><td>${{ r.cost }}</td></tr>
+        {% empty %}
+        <tr><td colspan="4">No records yet.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="card">
+    <h3>Appointments</h3>
+    {% for a in appointments %}
+        <p>{{ a.service_type }} — {{ a.scheduled_at }}
+           <span class="status-badge status-{{ a.status }}">{{ a.status }}</span></p>
+    {% empty %}
+        <p>No appointments yet.</p>
+    {% endfor %}
+    <a href="{% url 'vehicles:appointment_create' %}" class="btn">Book Appointment</a>
+</div>
+{% endblock %}
